@@ -8,11 +8,11 @@ Workspace, governance, package boundaries, initial domain vocabulary, CI, proven
 
 ## Core domain and persistence
 
-Refine domain invariants, repository contracts, migrations, transaction boundaries, and adapter conformance tests.
+Status: contract foundation implemented in WO-002. Continue with reviewed SQL schemas, migrations, isolation expectations, and real-adapter conformance tests.
 
 ## One-click access
 
-Design hashed tokens, issuance, expiration, revocation, consumption, session validation, replay protection, and audit events.
+Threat model and digest-only lifecycle contracts are documented. Future work includes secure token generation, hashing adapters, atomic redemption, session rotation, rate limiting, and audit implementation.
 
 ## Progress and event tracking
 

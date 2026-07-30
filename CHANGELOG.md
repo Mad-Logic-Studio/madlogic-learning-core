@@ -9,3 +9,13 @@ All notable changes to this project will be documented in this file. The format 
 - Initial TypeScript workspace and package boundaries.
 - Preliminary learning-domain contracts.
 - Governance, security, provenance, architecture, CI, and build-journal foundations.
+- Explicit enrollment and access-link transition rules.
+- Versioned repository, idempotency, transaction, and outbox contracts.
+- Synthetic in-memory persistence fixture and conformance tests.
+- One-click access threat model and digest-only token lifecycle architecture.
+
+### Changed
+
+- Enrollment and access-link aggregates now carry optimistic-concurrency versions.
+- Access links use a typed token digest and explicit single-use or reusable policy.
+- Test execution now runs all contract suites.
