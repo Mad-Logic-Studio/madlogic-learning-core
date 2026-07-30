@@ -1,0 +1,27 @@
+name: Architecture proposal
+description: Propose a decision requiring an ADR
+title: "architecture: "
+labels: ["architecture"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Proposed decision
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: implications
+    attributes:
+      label: Security and public/private implications
+    validations:
+      required: true

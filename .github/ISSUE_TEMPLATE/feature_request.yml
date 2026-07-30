@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a reusable public capability
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the reusable problem without private consumer data.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Public/private boundary
+      options:
+        - label: This proposal contains no secrets, learner data, proprietary content, or private operational identifiers.
+          required: true
