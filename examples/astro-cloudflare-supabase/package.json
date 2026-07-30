@@ -1,0 +1,12 @@
+{
+  "name": "@madlogic-learning/example-astro-cloudflare-supabase",
+  "version": "0.1.0-alpha.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "tsc -b" },
+  "dependencies": {
+    "@madlogic-learning/cloudflare": "0.1.0-alpha.0",
+    "@madlogic-learning/core": "0.1.0-alpha.0",
+    "@madlogic-learning/postgres": "0.1.0-alpha.0"
+  }
+}

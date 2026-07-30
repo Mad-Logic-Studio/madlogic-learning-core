@@ -1,0 +1,12 @@
+{
+  "name": "@madlogic-learning/postgres",
+  "version": "0.1.0-alpha.0",
+  "description": "PostgreSQL persistence contracts for MadLogic Learning Core.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": { ".": "./dist/index.js" },
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc -b" },
+  "dependencies": { "@madlogic-learning/core": "0.1.0-alpha.0" }
+}

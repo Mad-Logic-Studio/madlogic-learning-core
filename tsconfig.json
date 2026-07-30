@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/postgres" },
+    { "path": "./packages/cloudflare" },
+    { "path": "./examples/astro-cloudflare-supabase" }
+  ]
+}

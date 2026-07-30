@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a reproducible defect in the public core
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets, raw tokens, learner data, or private consumer information.
+  - type: textarea
+    id: description
+    attributes:
+      label: Defect
+      description: What happened and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide a minimal synthetic reproduction.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version, package version, and relevant adapter.
