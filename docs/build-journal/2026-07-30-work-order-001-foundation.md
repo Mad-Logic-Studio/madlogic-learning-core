@@ -25,7 +25,7 @@ ClassroomIO, Wellms/EscolaLMS, LearnHouse, CourseLit, and Better Auth. Individua
 
 ## Files created
 
-Workspace configuration, three packages, one generic example, domain tests, governance documents, five ADRs, research records, public/private boundary and integration documents, community templates, CI workflows, Dependabot configuration, notices, and this journal.
+Workspace configuration, three packages, one generic example, domain tests, governance documents, five ADRs, research records, public/private boundary and integration documents, community templates, CI, Dependabot configuration, notices, and this journal.
 
 ## Tests and verification
 
@@ -39,7 +39,9 @@ Local verification completed against Node.js 22.16.0, npm 10.9.2, and TypeScript
 - `npm run security:scan` — pass; 0 findings
 - local npm audit — 0 vulnerabilities
 
-GitHub Actions results are recorded in the draft pull request after the workflows complete.
+GitHub's `actions/dependency-review-action@v4` was attempted on draft PR #2 but failed because the repository dependency graph is not enabled. The unsupported workflow was removed rather than preserving a false failing check. Dependency protection remains through the deterministic workspace lockfile, `npm audit --omit=dev --audit-level=high` in CI, and weekly Dependabot configuration. Enabling the repository dependency graph is a future administrative option.
+
+GitHub Actions results are recorded in the draft pull request after the supported workflow completes.
 
 ## Security review
 
@@ -56,6 +58,7 @@ All examples are synthetic. Public interfaces remain provider-neutral. The priva
 - no token issuance, session validation, or authentication
 - no Astro, Supabase, or Cloudflare implementation dependency in the compile-only example
 - upstream commits and licenses require exact pinning before any future code reuse
+- GitHub dependency review is unavailable until the repository dependency graph is enabled
 
 ## Next milestone
 
