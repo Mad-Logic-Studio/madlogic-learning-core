@@ -42,21 +42,21 @@ test("entitlement mapping preserves pending evidence and maps purchase reversals
     },
     [
       {
-        sequence: 1,
+        id: 1,
         status: "pending",
         source_status: "pending",
         reason: "entitlement_created",
         changed_at: "2026-07-30T00:00:00.000Z",
       },
       {
-        sequence: 2,
+        id: 2,
         status: "active",
         source_status: "active",
         reason: "entitlement_created",
         changed_at: "2026-07-30T00:00:00.000Z",
       },
       {
-        sequence: 3,
+        id: 3,
         status: "revoked",
         source_status: "refunded",
         reason: "status_changed",
