@@ -13,9 +13,13 @@ All notable changes to this project will be documented in this file. The format 
 - Versioned repository, idempotency, transaction, and outbox contracts.
 - Synthetic in-memory persistence fixture and conformance tests.
 - One-click access threat model and digest-only token lifecycle architecture.
+- Additive PostgreSQL/Supabase migrations for courses, lessons, lesson progress, durable enrollment history, idempotency, and transactional outbox events.
+- Supabase classroom row mappings and migration safety tests.
+- Consumer-first portable persistence architecture and deployment verification guidance.
 
 ### Changed
 
 - Enrollment and access-link aggregates now carry optimistic-concurrency versions.
 - Access links use a typed token digest and explicit single-use or reusable policy.
 - Test execution now runs all contract suites.
+- Existing classroom cohorts and numbered resources can be upgraded in place to course and lesson relationships without replacing established access or purchase workflows.
