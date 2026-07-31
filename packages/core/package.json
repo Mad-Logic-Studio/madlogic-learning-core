@@ -4,7 +4,10 @@
   "description": "Framework-neutral learning domain contracts.",
   "license": "Apache-2.0",
   "type": "module",
-  "exports": { ".": "./dist/index.js" },
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./access": { "types": "./dist/access.d.ts", "default": "./dist/access.js" }
+  },
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": { "build": "tsc -b" }
