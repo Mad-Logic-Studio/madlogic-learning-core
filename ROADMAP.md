@@ -8,7 +8,7 @@ Workspace, governance, package boundaries, initial domain vocabulary, CI, proven
 
 ## Core domain and persistence
 
-Status: contract foundation implemented in WO-002. Continue with reviewed SQL schemas, migrations, isolation expectations, and real-adapter conformance tests.
+Status: PostgreSQL/Supabase migrations, existing-classroom compatibility, row mappings, status history, optimistic versions, idempotency, and transactional outbox foundations are implemented through WO-003. Future work should focus on the smallest required real adapter behavior rather than expanding the schema speculatively.
 
 ## One-click access
 
@@ -16,15 +16,15 @@ Threat model and digest-only lifecycle contracts are documented. Future work inc
 
 ## Progress and event tracking
 
-Define lesson progress transitions, event delivery guarantees, idempotency, and reporting contracts.
+Lesson progress persistence and outbox production are implemented. Future work includes an expected-version server adapter, outbox publishing, cleanup operations, and reporting only as required by a real consumer.
 
 ## Administration contracts
 
-Introduce provider-neutral course, run, enrollment, and access administration interfaces.
+Introduce only the course, lesson, run, enrollment, and access administration interfaces required by approved classroom workflows. Do not build a generalized LMS administration suite prematurely.
 
 ## Private production-consumer validation
 
-Validate the public core through an approved private consumer without exposing proprietary content, data, links, or credentials.
+Connect an approved private consumer to the public persistence package without exposing proprietary content, data, links, credentials, or deployment identifiers.
 
 ## Community stabilization
 
