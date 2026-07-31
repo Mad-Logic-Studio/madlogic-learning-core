@@ -58,7 +58,7 @@ export interface ClassroomEntitlementRow {
 }
 
 export interface ClassroomEntitlementHistoryRow {
-  readonly sequence: number;
+  readonly id: number;
   readonly status: EnrollmentStatus;
   readonly source_status: string;
   readonly reason: string | null;
@@ -137,7 +137,7 @@ export function mapClassroomEnrollment(
   row: ClassroomEntitlementRow,
   historyRows: readonly ClassroomEntitlementHistoryRow[],
 ): Enrollment {
-  const ordered = [...historyRows].sort((left, right) => left.sequence - right.sequence);
+  const ordered = [...historyRows].sort((left, right) => left.id - right.id);
   const history: EnrollmentStatusRecord[] = [];
 
   for (const record of ordered) {
