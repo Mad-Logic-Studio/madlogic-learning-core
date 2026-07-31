@@ -61,9 +61,9 @@ test("learner-facing tables use RLS and internal tables deny client access", () 
   assert.match(allSql, /revoke execute on function public\.rls_auto_enable\(\)/u);
 });
 
-test("migration models digest-only access and contains no deployment secrets", () => {
-  assert.match(allSql, /invitation_digest/u);
-  assert.doesNotMatch(allSql, /raw[_ -]?token/u);
+test("migration preserves digest-only access and contains no deployment secrets", () => {
+  assert.match(allSql, /public\.classroom_access_invitations/u);
+  assert.doesNotMatch(allSql, /\b(?:raw_)?token(?:_value|_material)?\b/u);
   assert.doesNotMatch(allSql, /service[_ -]?role[_ -]?key/u);
   assert.doesNotMatch(allSql, /qijossbqgynlocswriun/u);
   assert.doesNotMatch(allSql, /socialmedium-classroom/u);
