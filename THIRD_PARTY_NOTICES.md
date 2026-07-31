@@ -1,55 +1,66 @@
 # Third-Party Notices
 
-This document distinguishes direct dependencies, specification-based implementation, permissive-code adaptation, and architecture-only research. Research does not imply endorsement by an upstream project.
+This repository is Apache-2.0 licensed. This notice distinguishes direct dependencies and platform primitives from research-only references. Research does not imply upstream endorsement or derivation.
 
-## Direct dependencies and platform primitives
+## Direct dependency inventory
 
-| Project / standard | Exact version reviewed or used | License / status | Treatment |
+### Third-party runtime npm packages
+
+**None.** The lockfile contains only local MadLogic workspace packages.
+
+### Build and CI dependencies
+
+| Component | Version/reference | License/status | Use |
 |---|---|---|---|
-| TypeScript | 5.8.3 | Apache-2.0 | Direct compiler/build dependency |
-| Node.js / Cloudflare Web Crypto | Web Cryptography API implementation | Public web-platform API | Runtime primitive for secure random generation and SHA-256; no upstream implementation copied |
-| PostgreSQL | 17.x | PostgreSQL License | Database engine and documented SQL behavior |
-| Supabase | Hosted PostgreSQL project, generated types, migration and advisor tooling | Platform service; components carry their own licenses | Deployment and verification platform; no Supabase Auth integration |
+| TypeScript | 5.8.3 | Apache-2.0 | Pinned compiler installed by CI |
+| Node.js | 22 | Node.js licenses | Build/test runtime and standard library |
+| `actions/checkout` | v4 | GitHub Action | Repository checkout in CI |
+| `actions/setup-node` | v4 | GitHub Action | Node installation and npm cache in CI |
+
+### Platform and standards dependencies
+
+| Component/standard | Version/reference | License/status | Use |
+|---|---|---|---|
+| Web Cryptography API | W3C Recommendation 2017; Level 2 draft 2025 | Public web specification | Secure random bytes, `randomUUID`, and SHA-256 digest operations |
+| PostgreSQL | 17.x | PostgreSQL License | Database, transactions, locks, constraints, triggers, indexes, functions, and RLS |
+| Supabase | Hosted PostgreSQL migration/type/advisor tooling | Platform service | Approved deployment and verification environment; Supabase Auth is not used |
+| Cloudflare Workers Web APIs | Web Standards runtime contracts | Platform documentation | Target adapter environment |
 | RFC 3986 | URI Generic Syntax | IETF standard | URL and redirect constraints |
-| RFC 6265 | HTTP State Management Mechanism | IETF standard | Cookie semantics |
-| RFC 9110 | HTTP Semantics | IETF standard | Redirect/cache response behavior |
-| RFC 9562 | UUIDs | IETF standard | Identifier expectations |
-| xAPI | 1.0.3 | Public specification | Event-vocabulary reference only |
+| RFC 6265 / RFC6265bis draft 22 | Cookies | IETF standard/draft | Cookie attributes and scope |
+| RFC 9110 | HTTP Semantics | IETF standard | Redirect and cache behavior |
+| RFC 9562 | UUIDs | IETF standard | Identifier semantics |
+| xAPI | 1.0.3 snapshot; current 2.0 status reviewed | Apache-2.0 specification | Event-vocabulary reference only; project does not claim xAPI conformance |
 
 ## Permissive components evaluated but not installed
 
-| Project | Exact version or release reviewed | License | Decision |
+| Project | Snapshot reviewed | License | Decision |
 |---|---|---|---|
-| Zod | v4.4.3, release commit `1fb56a5` | MIT | Strong candidate for future private HTTP/JSON boundary validation; not needed to replace current domain and database validation |
-| uuid | v13.0.2 | MIT | Not installed because runtime-native secure randomness and `crypto.randomUUID()` cover current needs |
-| supabase-js | v2.105.3, release commit `84a729b` | MIT | Expected candidate for later private application integration; public core remains transport-neutral |
-| AdonisJS Session | release line inspected 2026-04-09 | MIT | Architecture reference only; direct reuse would couple the core to AdonisJS middleware and storage conventions |
+| Zod | v4.4.3, release commit `1fb56a5` | MIT | Preferred candidate for later private HTTP/JSON boundary validation; not needed for current domain/database invariants |
+| uuid | v13.0.2, release commit `bd34976` | MIT | Runtime-native `crypto.randomUUID()` and secure bytes are sufficient |
+| supabase-js | v2.105.3, release commit `84a729b` | MIT | Preferred future private application client; public core remains transport-neutral |
+| Hono | v4.12.23 release line | MIT | Strong future private Cloudflare route-layer candidate; not appropriate as a public-core dependency |
+| AdonisJS Session | release line inspected 2026-04-09 | MIT | Architecture reference only; direct use would couple sessions to Adonis middleware and storage drivers |
 
-No permissively licensed source code was copied or adapted in WO-001 through WO-004. The evaluated components above remain possible future dependencies where they replace real adapter work without distorting the architecture.
+No permissively licensed source code was copied or adapted. These projects were evaluated as possible dependencies and documented so later work does not rebuild mature boundary/router/client functionality unnecessarily.
 
-## LMS architecture references
+## LMS architecture references only
 
-| Project | Exact commit reviewed | License | Code reused | Treatment |
+| Project | Snapshot reviewed | License observed | Code reused? | Treatment |
 |---|---|---|---:|---|
-| Moodle | `70771c10954e532fce2c25874dffc57259550e25` | GPL-3.0 | No | Architecture and domain-vocabulary reference only |
-| Canvas LMS | `1c9f0bb8013ed69c4f2efe11fd483025469b7e6c` | AGPL-3.0 | No | Architecture and UX reference only |
-| Open edX Platform | `8915b9161af68e4584224b86023babc8ecfd3e9e` | AGPL-3.0 | No | Architecture and operational reference only |
-| ClassroomIO | WO-001 recorded snapshot | AGPL restrictions recorded in WO-001 research | No | Architecture and UX reference only |
-| Wellms / EscolaLMS | WO-001 recorded snapshot | AGPL restrictions recorded in WO-001 research | No | Architecture and UX reference only |
-| LearnHouse | WO-001 recorded snapshot | License must be reverified before any reuse | No | Architecture and UX reference only |
-| CourseLit | WO-001 recorded snapshot | License must be reverified before any reuse | No | Architecture and UX reference only |
-| Better Auth | WO-001 recorded snapshot | File-level license review required before reuse | No | Authentication architecture reference only |
+| Moodle | commit `70771c10954e532fce2c25874dffc57259550e25` | GPL-3.0 | No | Domain and architecture reference only |
+| Canvas LMS | commit `1c9f0bb8013ed69c4f2efe11fd483025469b7e6c` | AGPL-3.0 | No | Architecture and UX reference only |
+| Open edX Platform | commit `8915b9161af68e4584224b86023babc8ecfd3e9e` | AGPL-3.0 | No | Course-run and operational reference only |
+| ClassroomIO | WO-001 recorded snapshot | AGPL-family restrictions recorded | No | Architecture and UX reference only |
+| Wellms / EscolaLMS | WO-001 recorded snapshot | AGPL-family restrictions recorded | No | Architecture and UX reference only |
+| LearnHouse | WO-001 recorded snapshot | Reverify before any reuse | No | Architecture reference only |
+| CourseLit | WO-001 recorded snapshot | Reverify before any reuse | No | Architecture reference only |
+| Better Auth | WO-001 recorded snapshot | File/package license review required before reuse | No | Authentication architecture reference only |
 
-## Classification definitions
+## Provenance statement
 
-1. **Direct dependency:** installed package or runtime/platform component used by the repository.
-2. **Adapted permissive code:** MIT, Apache-2.0, BSD, or equivalent source modified for this project.
-3. **Adapted public specification:** implementation follows a published standard without copying an upstream implementation.
-4. **Architecture reference only:** design or behavior studied under clean-room rules.
-5. **Original MadLogic implementation:** source authored for this repository from requirements and public specifications.
+- MadLogic Learning Core is not a fork or derivative of a specific LMS.
+- No AGPL or GPL source code was copied, translated, adapted, linked, or vendored.
+- No external LMS package is embedded in the runtime.
+- Project-specific domain, access, session, authorization, repository, and migration code is original MadLogic work informed by public standards and architecture-level research.
 
-## Copyleft and AGPL confirmation
-
-No AGPL or GPL source code was copied, translated, adapted, linked, or vendored into MadLogic Learning Core. Canvas, Open edX, Moodle, ClassroomIO, and Wellms/EscolaLMS were research references only. MadLogic Learning Core must not be described as based on or derived from those repositories.
-
-See `docs/research/reuse-provenance-matrix.md` and the other `docs/research/` records for the complete subsystem-level assessment.
+See `docs/research/reuse-provenance-matrix.md` for the subsystem-level decision record and `docs/research/wo001-wo004-upstream-review.md` for source snapshots and reuse decisions.
