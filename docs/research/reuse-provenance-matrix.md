@@ -1,98 +1,115 @@
 # Reuse and Provenance Matrix
 
-## Scope
+## Scope and classification
 
-This audit covers the public work delivered from WO-001 through WO-004. It distinguishes installed dependencies, permissive-code adaptation, public-specification adaptation, architecture-only research, and original MadLogic implementation.
+This audit covers WO-001 through WO-004. It records what was installed, what was implemented from public standards, what was studied only as an architectural reference, and what was authored specifically for MadLogic Learning Core.
 
-Classification:
+1. **Direct dependency** — an installed package, runtime primitive, database engine, or CI tool used by the repository.
+2. **Adapted permissive code** — permissively licensed source copied or translated and then modified.
+3. **Adapted public specification** — behavior implemented from a published standard or platform contract without copying an implementation.
+4. **Architecture reference only** — concepts or behavior studied; no source copied or translated.
+5. **Original MadLogic implementation** — code and schema authored for this repository from project requirements, public specifications, and the existing classroom contract.
 
-1. **Direct dependency** — installed and executed as part of the repository toolchain or runtime.
-2. **Adapted permissive code** — source under MIT, Apache-2.0, BSD, or equivalent was modified or translated.
-3. **Adapted public specification** — implementation follows a published standard or platform contract without copying an upstream implementation.
-4. **Architecture reference only** — upstream design or behavior was studied; no source was copied or adapted.
-5. **Original MadLogic implementation** — repository-specific source authored for this project from requirements and public specifications.
+## Executive conclusion
 
-## Executive finding
+MadLogic Learning Core is **not a fork, derivative, or adaptation of one LMS repository**. Moodle, Canvas LMS, Open edX, ClassroomIO, Wellms/EscolaLMS, LearnHouse, and CourseLit were reviewed only to understand established learning-platform boundaries and vocabulary. No source from those projects was copied, translated, linked, or vendored.
 
-MadLogic Learning Core is **not based on, derived from, or adapted from a single LMS repository**. The learning-domain vocabulary and boundaries were developed clean-room after architecture-level review of multiple LMS projects and standards. No Moodle GPL source, Canvas AGPL source, Open edX AGPL source, ClassroomIO AGPL source, EscolaLMS/Wellms AGPL source, or other AGPL source was copied.
+The repository has **no third-party runtime npm dependency**. The lockfile contains only MadLogic workspace packages. TypeScript 5.8.3 is installed by CI as the pinned compiler. Runtime cryptography is delegated to Web Crypto; persistence, locking, transactions, triggers, and RLS are delegated to PostgreSQL/Supabase.
 
-The current repository intentionally avoids importing a complete LMS because those platforms bring incompatible language/runtime assumptions, product scope, account systems, authoring stacks, and deployment requirements. Working custom code is not being replaced merely to claim reuse.
+No element is classified as **Adapted permissive code** in WO-001 through WO-004.
 
-## Repository and specification snapshots reviewed
+## Reviewed upstream snapshots
 
-| Reference | Exact version or commit reviewed | License / status | Use |
+| Upstream or standard | Exact snapshot reviewed | License/status | Treatment |
 |---|---|---|---|
-| `moodle/moodle` | `70771c10954e532fce2c25874dffc57259550e25` (5.3dev build 20260728) | GPL-3.0 | Architecture reference only; no code copied |
-| `instructure/canvas-lms` | `1c9f0bb8013ed69c4f2efe11fd483025469b7e6c` | AGPL-3.0 | Architecture reference only; no code copied |
-| `openedx/openedx-platform` | `8915b9161af68e4584224b86023babc8ecfd3e9e` | AGPL-3.0 | Architecture reference only; no code copied |
-| `colinhacks/zod` | v4.4.3, release commit `1fb56a5` | MIT | Evaluated as a possible validation dependency; not installed |
-| `uuidjs/uuid` | v13.0.2 | MIT | Evaluated for opaque identifiers; not installed because runtime-native secure bytes are sufficient |
-| `supabase/supabase-js` | v2.105.3, release commit `84a729b` | MIT | Evaluated for future private application integration; not installed in the public core |
-| `adonisjs/session` | release line inspected 2026-04-09 | MIT | Session architecture reference only; framework coupling made direct reuse inappropriate |
-| TypeScript | 5.8.3 | Apache-2.0 | Direct development/build dependency |
-| ECMAScript / Web Crypto API | Web Cryptography Level 2 and runtime Web Crypto implementation | Public specification | Secure random generation, SHA-256 digesting, constant-time comparison boundary |
-| RFC 3986 | URI Generic Syntax | IETF standard | URL-safe token and internal redirect constraints |
-| RFC 6265 / current cookie specification | HTTP State Management Mechanism | IETF standard | Cookie attributes and scope |
-| RFC 9110 | HTTP Semantics | IETF standard | Redirect, cache, and response semantics |
-| RFC 9562 | UUIDs | IETF standard | Opaque identifier expectations; no UUID library required in the framework-neutral core |
-| PostgreSQL | 17.x documentation and SQL behavior | PostgreSQL License | Transactions, constraints, indexes, advisory locks, triggers, RLS-compatible schema design |
-| Supabase | Hosted PostgreSQL, generated types, RLS and advisor contracts | Platform service; underlying OSS components vary | Deployment and verification target; no Supabase Auth use |
-| Cloudflare Workers Web APIs | Workers runtime contracts | Platform documentation | Adapter boundary for requests, cookies, redirects, crypto, clocks, and bindings |
-| xAPI | 1.0.3 vocabulary reviewed | Public specification | Learning-event vocabulary reference only; no xAPI package or statement model copied |
+| `moodle/moodle` | commit `70771c10954e532fce2c25874dffc57259550e25` | GPL-3.0 | Architecture reference only |
+| `instructure/canvas-lms` | commit `1c9f0bb8013ed69c4f2efe11fd483025469b7e6c` | AGPL-3.0 | Architecture reference only |
+| `openedx/openedx-platform` | commit `8915b9161af68e4584224b86023babc8ecfd3e9e` | AGPL-3.0 | Architecture reference only |
+| ClassroomIO | WO-001 recorded snapshot | AGPL-family restrictions recorded in WO-001 research | Architecture reference only |
+| Wellms / EscolaLMS | WO-001 recorded snapshot | AGPL-family restrictions recorded in WO-001 research | Architecture reference only |
+| LearnHouse | WO-001 recorded snapshot | License must be reverified before any reuse | Architecture reference only |
+| CourseLit | WO-001 recorded snapshot | License must be reverified before any reuse | Architecture reference only |
+| `colinhacks/zod` | v4.4.3; release commit `1fb56a5` | MIT | Evaluated, not installed |
+| `uuidjs/uuid` | v13.0.2; release commit `bd34976` | MIT | Evaluated, not installed |
+| `supabase/supabase-js` | v2.105.3; release commit `84a729b` | MIT | Evaluated for later private integration, not installed |
+| `honojs/hono` | v4.12.23 release line | MIT | Evaluated for a later private route adapter, not installed |
+| `adonisjs/session` | release line inspected 2026-04-09 | MIT | Session architecture reference only |
+| TypeScript | 5.8.3 | Apache-2.0 | Direct build dependency |
+| Node.js | 22 in CI | Node.js licenses | Direct build/test runtime and standard library |
+| Web Cryptography API | W3C Recommendation 2017; Level 2 draft 2025 | Public web specification | Secure random and SHA-256 contract |
+| RFC 3986 | URI Generic Syntax | IETF standard | URL-safe token and redirect constraints |
+| RFC 6265 and RFC6265bis draft 22 | HTTP cookies | IETF standard/draft | Cookie semantics and attributes |
+| RFC 9110 | HTTP Semantics | IETF standard | 303 redirect and cache semantics |
+| RFC 9562 | UUIDs | IETF standard | Identifier semantics |
+| PostgreSQL | 17.x documentation; deployed engine 17 | PostgreSQL License | Direct database engine and behavior |
+| Supabase | hosted PostgreSQL, migration, type generation, and advisor tooling | Platform service | Direct deployment/verification platform; Supabase Auth not used |
+| Cloudflare Workers Web APIs | current Workers Web Standards contracts | Platform documentation | Runtime adapter target |
+| xAPI | 1.0.3 repository snapshot; current 2.0 status noted | Apache-2.0 specification | Event-vocabulary reference only |
+| Transactional outbox pattern | established architecture pattern | Public architecture pattern | Architecture reference only |
+| Ports-and-adapters / hexagonal architecture | established architecture pattern | Public architecture pattern | Architecture reference only |
 
 ## Subsystem matrix
 
-| Subsystem | References reviewed | Classification | Code/dependency/data-model treatment | Files or concepts influenced | Why direct reuse was or was not appropriate | Mature permissive replacement? | Maintenance and security implications |
+| Subsystem | Classification | Upstream or specification reviewed | Files/concepts influenced | Source copied? | Direct reuse evaluation and decision | Maintenance/security implications | MadLogic difference |
 |---|---|---|---|---|---|---|---|
-| Learner and course domain model | Moodle, Canvas, Open edX, xAPI | 4 + 5 | Common LMS nouns studied; types authored independently | `packages/core/src/index.ts` | Full LMS models are coupled to assignments, grading, institutions, roles, and authoring systems outside scope | No small library usefully replaces project-specific domain boundaries | Small model is easier to audit; future interoperability mapping remains possible |
-| Course-run / cohort model | Moodle course instances, Canvas courses/sections, Open edX course runs | 4 + 5 | Conceptual separation of reusable course and scheduled run implemented independently | `Course`, `CourseRun`, `classroom_courses`, `classroom_cohorts` | Upstream schemas are product-specific and copyleft | No focused permissive package identified | Explicit boundary prevents Sunflower-specific schedule rules leaking into reusable core |
-| Enrollment model | LMS enrollment concepts and existing classroom entitlements | 4 + 5 | Existing entitlement table adapted into generic domain mapping; no upstream LMS schema copied | Enrollment contracts, status history, Supabase mappings | Existing private schema was the authoritative migration target | No library replaces business-state invariants | Versioning and append-only history reduce silent state loss |
-| Lesson and progress model | LMS lesson/module/progress concepts, xAPI completion vocabulary | 3 + 4 + 5 | Clean-room minimal state model | lesson/progress contracts, tables, triggers | Mature LMS implementations carry grading and activity engines not required here | xAPI libraries could be added later only for external statement exchange | Forward-only completion and durable timestamps are deliberately narrow |
-| PostgreSQL persistence | PostgreSQL 17 docs | 3 + 5 | Repository contracts, optimistic concurrency, transactions, indexes and triggers authored for the domain | `packages/postgres` | ORM adoption would add runtime weight and obscure exact RLS/transaction behavior | Kysely/Drizzle were candidates, but neither replaces migration-specific SQL or domain repositories without added dependency cost | Plain SQL is portable and reviewable; requires disciplined migration tests |
-| Supabase integration | Supabase PostgreSQL/RLS/type-generation APIs; `supabase-js` v2.105.3 | 3 + 5 | Uses hosted Postgres and generated types; public package exposes mappings, not a Supabase client | migrations, `supabase.ts`, access mappings | Public core must not depend on a client library or project identity; private application may use `supabase-js` later | `supabase-js` is the likely private integration dependency, not a public-core requirement | Keeps secrets and project coupling out of public repository |
-| Token issuance and hashing | Web Crypto, RFC 3986; UUID library evaluated | 3 + 5 | Runtime crypto port plus original token service | `access-security.ts`, invitation services | Web Crypto is already available in Node/Cloudflare; another crypto wrapper would duplicate platform primitives | No replacement justified; native Web Crypto is the maintained implementation | Minimum 32 random bytes, URL-safe encoding, SHA-256 digest-only persistence |
-| Session storage and validation | Adonis session, Open edX safe sessions, OWASP-style server-side session principles | 4 + 5 | Opaque server-side sessions authored independently | session contracts/services, `classroom_sessions` | Framework session packages bind to framework middleware, cookie conventions, or storage drivers | A framework package could be used in a future adapter, but not in the framework-neutral core | Server lookup on every protected request makes revocation immediate |
-| Cookie handling | RFC 6265, Cloudflare/Fetch headers | 3 + 5 | Cookie directives and adapter contracts authored from standards | Cloudflare adapter contracts | Framework cookie packages would pull routing/runtime coupling into core | Native header serialization or a small MIT cookie package may be used by a private adapter later | HttpOnly, Secure-compatible, SameSite=Lax, narrow path, no token in URL after exchange |
-| Revocation | Session-security patterns; existing entitlement reversal model | 4 + 5 | Invitation, session, and entitlement-wide invalidation authored for this lifecycle | services, triggers, management functions | Generic session packages do not understand durable learning entitlements | No library replaces cross-aggregate revocation semantics | Database-backed state prevents stale self-contained credentials from surviving revocation |
-| Idempotency | HTTP/API idempotency patterns; PostgreSQL uniqueness/advisory locks | 3 + 5 | Existing WO-003 idempotency table reused; access commands integrated | idempotency records, issuance/exchange services | Third-party middleware is transport-specific and cannot enforce database transaction coupling | A private HTTP adapter may later use permissive middleware, but core records remain necessary | Deterministic conflicts and replay results prevent duplicate invitations/sessions |
-| Outbox events | Transactional outbox architectural pattern | 4 + 5 | Existing WO-003 outbox reused and extended with generic access events | outbox table/triggers/event vocabulary | Libraries usually assume a specific ORM, broker, or worker | A future publisher can use a maintained queue/client package; no broker is needed yet | Atomic database event recording avoids state/event divergence |
-| Validation | TypeScript strict mode; Zod v4.4.3 evaluated | 1 + 5 | Compile-time contracts and explicit domain validation currently used | domain validators and service input checks | Zod is mature and MIT, but installing it now would add runtime weight without replacing database constraints or domain transitions | **Candidate:** Zod could replace repetitive boundary parsing when external JSON routes are introduced | Reassess in private route integration; do not duplicate large schema parsers manually |
-| Database migrations | PostgreSQL 17, Supabase migration execution | 3 + 5 | Append-only SQL migrations authored for existing schema | `packages/postgres/migrations` | ORM migration generators cannot safely infer preservation/backfill/RLS needs for this live schema | No replacement justified for these migrations | Static destructive-operation tests plus live rollback verification are required |
-| Cloudflare runtime adapters | Cloudflare Workers/Fetch/Web Crypto APIs | 3 + 5 | Ports for cookies, redirects, request metadata, bindings, clock, hashing and random bytes | `packages/cloudflare` | Framework middleware would bind the core to Astro/Hono/React Router | Hono or similar MIT frameworks may be used by a private route layer later, not by core | Keeps portability across Workers-compatible frontends |
-| API/service separation | Hexagonal/ports-and-adapters architecture | 4 + 5 | Framework-neutral services and persistence/runtime ports | package boundaries | Full dependency-injection frameworks are unnecessary at current size | No replacement justified; TypeScript interfaces are sufficient | Explicit seams make security testing and future adapters easier |
-| Learning-event vocabulary | xAPI 1.0.3, common LMS events | 3 + 4 + 5 | Small generic vocabulary authored independently | `LearningEventName`, access outbox events | Full xAPI statement machinery is outside current delivery needs | A maintained xAPI client can be added only if an external Learning Record Store is introduced | Current payloads minimize personal data and exclude tokens/cookies |
+| Learner and course domain model | 4 + 5 | Moodle, Canvas, Open edX | `packages/core/src/index.ts` learner/course vocabulary | No | Full LMS domain packages were rejected because they include grading, institutional roles, authoring, and account systems outside scope | Small model is independently auditable; interoperability mappings can be added later | Minimal headless learning nouns only |
+| Course-run and cohort model | 4 + 5 | Open edX course runs; Canvas courses/sections; Moodle course instances | `CourseRun`, `classroom_courses`, `classroom_cohorts` | No | No small permissive package replaces the project-specific distinction | Prevents delivery dates and cohorts from contaminating reusable course definitions | Reusable course separated from scheduled delivery run |
+| Enrollment model | 4 + 5 | Common LMS enrollment concepts; existing classroom entitlements | enrollment contracts, status history, mappings | No | Existing classroom entitlement schema was authoritative; external LMS enrollment models were incompatible | Versioning and append-only history protect durable evidence | Enrollment remains after invitation/session revocation |
+| Lesson and progress model | 3 + 4 + 5 | LMS modules/progress; xAPI completion concepts | lessons, progress state, forward-only triggers | No | Full activity/grade engines were rejected; xAPI client unnecessary without an LRS | Narrow state machine is easy to verify; xAPI export remains possible | `not_started` → `in_progress` → `completed`, with terminal completion |
+| PostgreSQL persistence | 1 + 3 + 5 | PostgreSQL 17 transactions, constraints, locks, triggers, RLS | `packages/postgres` | No | Kysely/Drizzle were considered; neither replaces exact migration, RLS, and transaction requirements without adding runtime weight | Plain SQL is portable and transparent but requires disciplined tests | Domain repositories plus explicit additive SQL |
+| Supabase integration | 1 + 3 + 5 | Supabase migrations, RLS, generated types, advisors; `supabase-js` v2.105.3 | migrations and row mappings | No | `supabase-js` is deferred to the private app; public core must remain transport/project neutral | Keeps project identifiers and credentials out of public source | Supabase is deployment infrastructure, not the identity system |
+| Database migrations | 3 + 5 | PostgreSQL/Supabase migration behavior | six WO-003/WO-004 append-only migrations | No | ORM-generated migrations cannot safely model existing data backfills and policy hardening | Static destructive-operation tests and live rollback probes are required | Existing classroom schema extended, never replaced |
+| Validation | 1 + 5 | TypeScript strict mode; Zod v4.4.3 | explicit guards, domain validators, SQL constraints | No | Zod is mature and MIT, but not installed because no external JSON route is shipped in public core | Reevaluate Zod when the private HTTP boundary appears; avoid hand-building large parsers | Compile-time types plus narrow runtime guards and database checks |
+| Token generation | 1 + 3 + 5 | Web Crypto `getRandomValues`; RFC 3986 | `access-security.ts` | No | Native Web Crypto replaces a custom RNG or UUID package | Security updates remain with runtime implementation | At least 32 random bytes, base64url without padding |
+| Token hashing | 1 + 3 + 5 | Web Crypto `SubtleCrypto.digest`, SHA-256 | digest service and constant-time comparison boundary | No | Native Web Crypto replaces crypto wrappers | No custom cryptographic primitive; digests only are persisted | Invitation and session bearer values never enter storage |
+| Invitation issuance | 4 + 5 | Common magic-link patterns; existing invitation schema | invitation service and issue RPC | No | Auth/magic-link packages were rejected because they require user accounts, OTP, Supabase Auth, or their own session model | Raw token returned once; issuance must remain idempotent | Reusable enrollment-bound invitation rather than account login |
+| Invitation exchange | 3 + 5 | HTTP redirect/cache semantics; PostgreSQL advisory locks | exchange service/RPC, clean redirect | No | Framework auth middleware cannot express entitlement/course-run checks without coupling | Transaction lock and unique active-session index constrain races | One click exchanges digest for opaque server session and removes token URL |
+| Server-side sessions | 4 + 5 | AdonisJS Session and established server-side session patterns | `classroom_sessions`, session services | No | Adonis and similar packages are framework/storage bound; JWT-only libraries conflict with revocation | Every protected request rechecks authoritative server state | Session validity includes invitation, enrollment, run, and capability state |
+| Cookie handling | 3 + 5 | RFC 6265/RFC6265bis; Fetch/Cloudflare headers | Cloudflare cookie writer | No | A small cookie package may be used in a private adapter later; core needs only a tiny deterministic serializer | HttpOnly, Secure-compatible, SameSite=Lax, narrow path | Cookie contains only opaque session token; token removed from URL |
+| Revocation | 4 + 5 | Established session invalidation patterns; existing reversal model | invitation/session/entitlement revocation | No | Generic session packages do not understand durable entitlements | Database-backed state makes revocation immediate without cookie clearing | Cross-aggregate revocation preserves history/progress |
+| Regeneration | 4 + 5 | Recovery/magic-link patterns | regeneration service/RPC and lineage fields | No | No maintained package fits scanner-safe reusable invitation lineage | Old invitation and associated sessions are atomically invalidated | `regenerated_from_id`/`replaced_by_id` preserve audit lineage |
+| Expiration | 3 + 5 | UTC timestamp semantics; PostgreSQL scheduled cleanup patterns | expiry functions and partial indexes | No | External scheduler library is unnecessary; functions are worker-callable later | Requires future operational scheduler; validation still enforces expiry without cleanup | Expiration is stateful and emits generic events |
+| Idempotency | 3 + 5 | API idempotency patterns; PostgreSQL uniqueness/advisory locks | WO-003 idempotency table reused by issue/exchange | No | Transport middleware alone cannot atomically coordinate DB writes | Deterministic replay/conflict prevents duplicate active credentials | Request hashes and response references contain no bearer value |
+| Outbox events | 4 + 5 | Transactional outbox pattern | existing outbox table and access triggers | No | ORM/broker outbox packages were rejected because no ORM/broker exists | Atomic event recording avoids state/event divergence; publisher remains future work | Generic identifiers/state only, no token/cookie/personal payload |
+| Cloudflare adapters | 3 + 5 | Cloudflare Workers Web APIs, Fetch, Web Crypto | `packages/cloudflare` | No | Hono v4.12.23 is a good future private route candidate, but public core must not select a router | Interfaces keep runtime-specific handling testable and replaceable | Ports for cookies, redirects, request metadata, clock, randomness, hashing |
+| API/service/repository separation | 4 + 5 | Ports-and-adapters/hexagonal architecture | package and interface boundaries | No | Dependency-injection frameworks are unnecessary at current size | Explicit seams improve tests and future upgrades | Plain TypeScript interfaces instead of a container/framework |
+| Learning-event vocabulary | 3 + 4 + 5 | xAPI 1.0.3/2.0 concepts; common LMS events | enrollment, lesson, and access event names | No | Full xAPI statements/client rejected because no LRS integration is in scope | Vocabulary is intentionally small; later adapter can map to xAPI | Events are internal domain facts, not claims of xAPI conformance |
+| Authorization contracts | 4 + 5 | Capability/RBAC patterns; LMS release/tier checks | course/lesson/resource capability decisions | No | Generic RBAC packages do not model course release, enrollment expiry, and tier capability together | Centralized decisions reduce inconsistent route checks | Generic capability IDs; no Sunflower-specific tier constants in public core |
 
-## Actual code and packages reused
+## Direct dependency inventory
 
-- TypeScript 5.8.3 is the direct compiler/toolchain dependency.
-- Node.js and Cloudflare-compatible Web Crypto implementations provide secure random generation and SHA-256 primitives.
-- PostgreSQL supplies transactions, constraints, indexes, triggers, advisory locks, and row-level security mechanisms.
-- Supabase supplies the hosted PostgreSQL environment, migration execution, generated TypeScript types, and advisor tooling.
+### Runtime npm dependencies
 
-No LMS repository source files were copied or modified into MadLogic Learning Core. No permissively licensed LMS package is currently embedded in the runtime.
+None. `package-lock.json` contains only local MadLogic workspace links.
 
-## Components intentionally not rebuilt
+### Build and verification dependencies
 
-- cryptographic primitives: delegated to Web Crypto
-- database transaction engine, locking, constraints, indexes, and RLS: delegated to PostgreSQL/Supabase
-- TypeScript compiler and module system: delegated to TypeScript/Node
-- browser cookie and HTTP semantics: implemented against IETF/platform standards rather than inventing a protocol
-- UUID generation in deployment adapters: delegated to runtime-native `crypto.randomUUID()` where appropriate
-- future JSON route parsing: Zod remains the preferred candidate when external request schemas justify it
-- future private Supabase transport: `supabase-js` remains the preferred candidate rather than a custom REST client
+- `typescript@5.8.3` — Apache-2.0; installed by CI with `--no-save --ignore-scripts`.
+- Node.js 22 — CI runtime and standard library, including `node:test`.
+- `actions/checkout@v4` and `actions/setup-node@v4` — CI actions.
 
-## Custom implementation that remains justified
+### Platform primitives intentionally reused
 
-- minimal learner/course/course-run/enrollment model
-- mapping of the existing classroom schema into reusable domain contracts
-- reusable email invitation lifecycle that tolerates scanner prefetch
-- entitlement-aware server-side session validation and revocation
-- clean redirect and protected-resource authorization decisions
-- cross-aggregate idempotency and event semantics
-- Cloudflare-neutral ports that avoid binding the core to one frontend framework
+- Web Crypto for secure randomness and SHA-256.
+- PostgreSQL 17 for transactions, row locking, advisory locking, constraints, indexes, triggers, and RLS.
+- Supabase for hosted Postgres, migration execution, generated TypeScript types, and advisors.
+- Cloudflare/Fetch-compatible Web APIs as the runtime contract.
 
-These components express the approved learner experience and existing database constraints. No mature permissive library was identified that replaces them without importing a framework, account system, storage technology, or full LMS product.
+## Duplicate-wheel findings
 
-## AGPL and copyleft confirmation
+No substantial custom component presently duplicates a mature permissively licensed package that can be substituted without changing the approved architecture.
 
-No AGPL source code was copied, translated, adapted, or linked into the repository. Canvas and Open edX were architecture references only. Moodle GPL source was also not copied or adapted. Copyleft projects remain documented as research references, not dependencies or derivation claims.
+- **Validation:** Zod should be adopted at the later private JSON/HTTP boundary if route schemas grow. It would not replace domain transitions or SQL constraints today.
+- **Private Supabase transport:** use `supabase-js`; do not build a custom REST client.
+- **Private Cloudflare routing:** Hono is a strong candidate; do not bind the public core to it.
+- **Cryptography:** already delegated to Web Crypto; do not introduce custom cryptographic algorithms.
+- **UUIDs:** runtime `crypto.randomUUID()` is sufficient; `uuid` is unnecessary now.
+- **Sessions:** framework session packages were rejected because they are router/framework bound and generally do not implement entitlement-aware revocation.
+
+## AGPL/GPL confirmation
+
+No AGPL or GPL source code was copied, translated, adapted, linked, or vendored. Canvas, Open edX, ClassroomIO, Wellms/EscolaLMS, and Moodle remain architecture references only. No provenance evidence supports describing MadLogic Learning Core as derived from any of them.
+
+## Recommended public description
+
+> MadLogic Learning Core is a clean-room, lightweight TypeScript learning core informed by established open-source learning platforms and built from documented, permissively licensed dependencies and public standards.
